@@ -1,0 +1,30 @@
+{% extends 'app/base.html' %}
+
+{% block title %}
+    Comment Store Homepage
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1 class="text-center">Home Page</h1>
+
+        <h2 class="mt-4">Notifications</h2>
+        <form method="post" class="needs-validation bg-light p-4 rounded shadow" novalidate>
+            {% csrf_token %}
+            <div class="card">
+                <ul class="list-group list-group-flush">
+                    {% for transaction in last_transactions %}
+                        <li class="list-group-item">
+                            <strong>Transaction</strong> - From: {{ transaction.sender.username }}, To: {{ transaction.receiver.username }}, Money: {{ transaction.sender_amount }} {{ transaction.sender_currency }}, Time: {{ transaction.timestamp }}
+                        </li>
+                    {% endfor %}
+                    {% for request in last_requests %}
+                        <li class="list-group-item">
+                            <strong>Money Request</strong> - From: {{ request.sender.username }}, To: {{ request.receiver.username }}, Amount: {{ request.sender_amount }} {{ request.sender_currency }}, Status: {{ request.get_status_display }}, Time: {{ request.timestamp }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </form>
+    </div>
+{% endblock %}

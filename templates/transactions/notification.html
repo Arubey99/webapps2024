@@ -1,0 +1,37 @@
+{% extends 'app/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        {% csrf_token %}
+        {{ form|crispy }}
+        <h4>Transaction History</h4>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Details</th>
+                <th>Money</th>
+                <th>Counterparty</th>
+                <th>Type</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for transaction in transactions %}
+                <tr>
+                    <td>{{ transaction.timestamp }}</td>
+                    <td>{{ transaction.details }}</td>
+                    <td>{{ transaction.money_transferred }}</td>
+                    <td>{{ transaction.counterparty.username }}</td>
+                    <td>{{ transaction.transaction_type }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">No transactions found.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'app/base.html' %}
+{% load crispy_forms_filters %}
+
+{% block title %}
+    Transfer Money Between Users
+{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <div class="container mt-4">
+            <h4 class="text-center">Transfer Money</h4>
+            <div class="mb-3">
+                <h5 class="text-center">Current Balance: {{ user_balance }} {{ currency }}</h5>
+            </div>
+            <form method="post" class="needs-validation bg-light p-4 rounded shadow" novalidate>
+                {% csrf_token %}
+                {{ form|crispy }}
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Transfer</button>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}

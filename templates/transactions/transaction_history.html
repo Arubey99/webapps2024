@@ -1,0 +1,124 @@
+{% extends 'app/base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+    <div class="container mt-5">
+        <h2 class="text-center">Transaction History</h2>
+
+        <div class="card mt-4">
+            <div class="card-header">
+                <h3>Sent Transactions</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Sender</th>
+                        <th>Amount</th>
+                        <th>Timestamp</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for transaction in sent_transactions %}
+                        <tr>
+                            <td>{{ transaction.sender }}</td>
+                            <td>{{ transaction.sender_amount }} {{ transaction.sender_currency }}</td>
+                            <td>{{ transaction.timestamp }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header">
+                <h3>Received Transactions</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Sender</th>
+                        <th>Amount</th>
+                        <th>Timestamp</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for transaction in received_transactions %}
+                        <tr>
+                            <td>{{ transaction.receiver }}</td>
+                            <td>{{ transaction.receiver_amount }} {{ transaction.receiver_currency }}</td>
+                            <td>{{ transaction.timestamp }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header">
+                <h3>Sent Requests</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Receiver</th>
+                        <th>Amount</th>
+                        <th>Timestamp</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for request in sent_requests %}
+                        <tr>
+                            <td>{{ request.receiver }}</td>
+                            <td>{{ request.receiver_amount}} {{ request.receiver_currency }}</td>
+                            <td>{{ request.timestamp }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header">
+                <h3>Received Requests</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Sender</th>
+                        <th>Amount</th>
+                        <th>Timestamp</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for request in received_requests %}
+                        <tr>
+                            <td>{{ request.sender }}</td>
+                            <td>{{ request.receiver_amount }} {{ request.receiver_currency }}</td>
+                            <td>{{ request.timestamp }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header">
+                <h3>User Balance</h3>
+            </div>
+            <div class="card-body">
+                <p>Your current balance is {{ user_balance }} {{ currency }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

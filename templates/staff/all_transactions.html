@@ -1,0 +1,59 @@
+{% extends 'staff/baseadmin.html' %}
+
+{% block title %}
+    All Transactions
+{% endblock %}
+
+{% block content %}
+
+    <div class="container mt-4">
+        <h1 class="text-center">All Transactions</h1>
+
+        <form method="post" class="needs-validation bg-light p-4 rounded shadow" novalidate>
+            {% csrf_token %}
+            <table class="table mt-4">
+                <thead>
+                <tr>
+                    <th scope="col">Type</th>
+                    <th scope="col">Sender</th>
+                    <th scope="col">Receiver</th>
+                    <th scope="col">Transferred Money</th>
+                    <th scope="col">Timestamp</th>
+                    <th scope="col">State</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for transaction in all_transactions %}
+                    <tr>
+                        <td>{{ transaction.type }}</td>
+                        <td>{{ transaction.sender.username }}</td>
+                        <td>{{ transaction.receiver.username }}</td>
+                        {% if transaction.type == 'MoneyRequest' %}
+                            <td>{{ transaction.sender_amount }} {{ transaction.sender_currency }}</td>
+                        {% else %}
+                        <td>{{ transaction.sender_amount}} {{ transaction.sender_currency }}</td>
+                        {% endif %}
+                        <td>{{ transaction.timestamp }}</td>
+                        {% if transaction.type == 'MoneyRequest' %}
+                            <td>
+                                {% if transaction.status == 'A' %}
+                                    Accepted
+                                {% elif transaction.status == 'R' %}
+                                    Rejected
+                                {% elif transaction.status == 'P' %}
+                                    Pending
+                                {% endif %}
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6">No transactions found.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </form>
+    </div>
+
+{% endblock %}

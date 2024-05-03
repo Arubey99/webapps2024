@@ -1,0 +1,22 @@
+{% extends 'app/base.html' %}
+
+{% block title %}
+    Remaining Balance
+{% endblock %}
+
+{% block content %}
+    <!-- Transaction Successful Alert -->
+    <div class="alert alert-success text-center" role="alert">
+        Transaction Successful 
+        <br>You just send {{ send_money }} {{ currency }} 
+    </div>
+
+    {% if user.is_authenticated %}
+        <div class="container mt-4">
+            <h2 class="text-center">Remaining Balance</h2>
+            <div class="mb-3">
+                <h4 class="text-center">{{ user_balance }} {{ currency }}</h4>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

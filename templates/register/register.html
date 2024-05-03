@@ -1,0 +1,18 @@
+{% extends 'app/base.html' %}
+
+{% block title %}
+    Create an Account
+{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="mb-4">Register</h1>
+        <form method="post" class="needs-validation bg-light p-4 rounded shadow" novalidate>
+            {% csrf_token %}
+            {{ register_user|crispy }}
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,54 @@
+<!-- templates/requests.html -->
+{% extends 'app/base.html' %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2>Request Money</h2>
+        <form method="post" action="{% url 'request_money' %}" class="mb-3">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ request_form|crispy }}
+            </div>
+            <button type="submit" class="btn btn-primary">Request</button>
+        </form>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Your Requests</h2>
+                <ul class="list-group">
+                    {% for request in sent_requests %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            To: {{ request.receiver.username }},
+                            Amount: {{ request.receiver_amount }} {{ currency }}
+                            Status: {{ request.get_status_display }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="col-md-6">
+                <h2>Received Requests</h2>
+                <ul class="list-group">
+                    {% for request in received_requests %}
+                        <li class="list-group-item">
+                            From: {{ request.sender.username }},
+                            Amount: {{ request.sender_amount }} {{request.receiver_currency}},
+                            Status: {{ request.get_status_display }}
+                            <div class="btn-group mt-2">
+                                <form method="post" action="{% url 'accept_reject_request' request.id 'accept' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-success">Accept</button>
+                                </form>
+                                <form method="post" action="{% url 'accept_reject_request' request.id 'reject' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger">Reject</button>
+                                </form>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
