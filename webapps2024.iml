@@ -14,7 +14,10 @@
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/thrift/TimestampClient/venv" />
+      <excludeFolder url="file://$MODULE_DIR$/thrift/TimestampServer/venv" />
+    </content>
     <orderEntry type="jdk" jdkName="Python 3.9 (webapps2024) (2)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>

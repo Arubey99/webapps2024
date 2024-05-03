@@ -2,7 +2,7 @@ from decimal import Decimal
 from django.contrib.auth.models import User
 from django.db import transaction, OperationalError
 from django.db.models import Q
-
+from thrift.TimestampClient.timestampclient import get_current_timestamp
 from . import models
 from payapp.forms import MoneyTransferForm
 from .models import Money, TransactionHistory
@@ -37,6 +37,7 @@ def money_transfer(request):
                 messages.error(request, "Destination user does not exist.")
                 user_balance = round(Money.objects.get(name=request.user).money, 2)
                 currency = Money.objects.get(name=request.user).currency
+
                 return render(request, "transactions/moneytransfer.html", {"form": form, 'user_balance': user_balance, 'currency': currency})
 
             dst_id = User.objects.get(username=dst_username).id
@@ -48,7 +49,7 @@ def money_transfer(request):
             target_currency = models.Money.objects.get(name=dst_id).currency
 
             # Make a GET request to the currency conversion API
-            response = requests.get(f'http://localhost:8000/api/conversion/{base_currency}/{target_currency}/{money_to_transfer}/')
+            response = requests.get(f'https://localhost:8000/api/conversion/{base_currency}/{target_currency}/{money_to_transfer}/', verify=False)
 
             # Check if the request was successful
 
@@ -81,7 +82,9 @@ def money_transfer(request):
                                 receiver_amount=converted_amount,
                                 sender_currency=base_currency,
                                 receiver_currency=target_currency,
+                                timestamp = get_current_timestamp()
                             )
+                            print(get_current_timestamp())
                             user_balance = round(Money.objects.get(name=request.user).money, 2)
                             currency = Money.objects.get(name=request.user).currency
                             return render(request, "transactions/money.html", {"src_money": src_money, "dst_money": dst_money, 'user_balance': user_balance, 'currency': currency, "send_money": money_to_transfer})
@@ -157,7 +160,7 @@ def request_money(request):
             money_request.receiver_currency = receiver_currency
 
             # Make a GET request to the currency conversion API
-            response = requests.get(f'http://localhost:8000/api/conversion/{sender_currency}/{receiver_currency}/{reciver_amount}/')
+            response = requests.get(f'https://localhost:8000/api/conversion/{sender_currency}/{receiver_currency}/{reciver_amount}/', verify=False)
 
             if response.status_code == 200:
                 converted_amount = response.json()['converted_amount']

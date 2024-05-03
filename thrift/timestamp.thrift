@@ -1,0 +1,3 @@
+service TimeStampingService {
+  string getCurrentTimestamp();
+}

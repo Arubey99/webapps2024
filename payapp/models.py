@@ -14,6 +14,7 @@ class MoneyTransfer(models.Model):
     enter_your_username = models.CharField(max_length=50)
     enter_destination_username = models.CharField(max_length=50)
     enter_amount_to_transfer = models.IntegerField()
+    timestamp = models.DateTimeField(auto_now_add=False, default=timezone.now)
 
     def __str__(self):
         details = ''
@@ -31,7 +32,7 @@ class TransactionHistory(models.Model):
     receiver_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     sender_currency = models.CharField(max_length=10, default='GBP')
     receiver_currency = models.CharField(max_length=10, default='GBP')
-    timestamp = models.DateTimeField(default=timezone.now)
+    timestamp = models.DateTimeField(auto_now_add=False, default=timezone.now)
     STATUS_CHOICES = [
         ('P', 'Pending'),
         ('C', 'Completed'),
@@ -54,4 +55,4 @@ class MoneyRequest(models.Model):
     receiver_currency = models.CharField(max_length=10, default='GBP')
 
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='P')
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(auto_now_add=False, default=timezone.now)
